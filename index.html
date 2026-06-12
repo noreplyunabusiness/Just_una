@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rec-una // Home</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0b0b0d;
+            color: #f5f5f7;
+        }
+
+        /* Header Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: #121216;
+            border-bottom: 2px solid #1f1f26;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ff5722;
+            text-transform: lowercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            text-shadow: 0 0 10px rgba(255, 87, 34, 0.3);
+        }
+
+        .nav-auth-buttons button {
+            background-color: transparent;
+            border: 1px solid #4e4e5a;
+            color: #a0a0aa;
+            padding: 10px 20px;
+            margin-left: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-auth-buttons button:hover {
+            border-color: #ff5722;
+            color: #ff5722;
+            box-shadow: 0 0 8px rgba(255, 87, 34, 0.2);
+        }
+
+        .nav-auth-buttons .btn-signup {
+            background-color: #ff5722;
+            border-color: #ff5722;
+            color: #ffffff;
+        }
+
+        .nav-auth-buttons .btn-signup:hover {
+            background-color: #e64a19;
+            border-color: #e64a19;
+            box-shadow: 0 0 12px rgba(255, 87, 34, 0.4);
+        }
+
+        /* Layout Container */
+        .main-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 25px;
+        }
+
+        /* Welcome & Server Status Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 50px;
+            background: linear-gradient(135deg, #121216 0%, #1a1a24 100%);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid #22222e;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .hero-section h1 {
+            font-size: 36px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background-color: #142e14;
+            color: #4caf50;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+            margin-top: 15px;
+            border: 1px solid #1b5e20;
+            text-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
+        }
+
+        /* Section Headings */
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::after {
+            content: "";
+            flex-grow: 1;
+            height: 1px;
+            background-color: #22222e;
+        }
+
+        /* GAME PHOTOS FEED GRID */
+        .photo-feed-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .photo-card {
+            background-color: #121216;
+            border: 1px solid #1f1f26;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-5px);
+            border-color: #ff5722;
+        }
+
+        .photo-display {
+            width: 100%;
+            height: 220px;
+            background-color: #1f1f26;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-info {
+            padding: 15px 20px;
+        }
+
+        .photo-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            margin: 0 0 5px 0;
+        }
+
+        .photo-caption {
+            font-size: 14px;
+            color: #a0a0aa;
+            margin: 0;
+        }
+
+        /* Rules & Community Card */
+        .rules-card {
+            background-color: #121216;
+            border: 1px solid #1f1f26;
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .rules-list {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 20px;
+        }
+
+        .rules-list li {
+            margin-bottom: 18px;
+            line-height: 1.6;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .rules-list li::before {
+            content: "▪";
+            position: absolute;
+            left: 0;
+            color: #ff5722;
+            font-size: 18px;
+        }
+
+        .rules-highlight {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Pop-up Modals Styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .auth-card {
+            background-color: #121216;
+            border: 1px solid #22222e;
+            border-radius: 14px;
+            padding: 35px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.8);
+            transform: translateY(-20px);
+            transition: transform 0.2s ease;
+        }
+
+        .modal-overlay.active .auth-card {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #a0a0aa;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: #ff5722;
+        }
+
+        .auth-card h2 {
+            margin-top: 0;
+            margin-bottom: 24px;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #a0a0aa;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background-color: #0b0b0d;
+            border: 1px solid #1f1f26;
+            border-radius: 8px;
+            color: #f5f5f7;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff5722;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #ff5722;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #e64a19;
+        }
+
+        .message {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">rec-una</div>
+        <div class="nav-auth-buttons">
+            <button onclick="openModal('loginModal')">Login</button>
+            <button class="btn-signup" onclick="openModal('signupModal')">Sign Up</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="hero-section">
+            <h1>The Ultimate Revival Network</h1>
+            <p style="color: #a0a0aa; font-size: 16px; margin: 0;">Connected to the core cloud infrastructure database loop.</p>
+            <div class="status-badge">🟢 Server Status: ONLINE</div>
+        </div>
+
+        <div class="section-title">In-Game Captures & Memories</div>
+        <div class="photo-feed-grid">
+            
+            <div class="photo-card">
+                <img src="https://via.placeholder.com/600x400?text=Lobby+Screenshot+1" class="photo-display" alt="Lobby Capture">
+                <div class="photo-info">
+                    <div class="photo-title">The Welcome Center</div>
+                    <div class="photo-caption">Hanging out before spawning into testing instances.</div>
+                </div>
+            </div>
+
+            <div class="photo-card">
+                <img src="https://via.placeholder.com/600x400?text=Lobby+Screenshot+2" class="photo-display" alt="Matchmaking Capture">
+                <div class="photo-info">
+                    <div class="photo-title">Custom Game Lobbies</div>
+                    <div class="photo-caption">Active room loops handling live matchmaking variables.</div>
+                </div>
+            </div>
+
+            <div class="photo-card">
+                <img src="https://via.placeholder.com/600x400?text=Lobby+Screenshot+3" class="photo-display" alt="Action Capture">
+                <div class="photo-info">
+                    <div class="photo-title">Combat Arena Testing</div>
+                    <div class="photo-caption">Running core network validation loops inside matches.</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="section-title">Security & Framework Directives</div>
+        <div class="rules-card">
+            <p style="color: #a0a0aa; margin-top: 0;">Welcome to the project. To keep the lobbies stable and fair for everyone testing the revival backbone, you must adhere to the core directives below:</p>
+            
+            <ul class="rules-list">
+                <li>
+                    <span class="rules-highlight">No Exploiting or Core Tampering:</span> Do not abuse client flaws or inject unauthorized network scripts. This environment is built to protect our code from becoming a completely broken, exploited wasteland.
+                </li>
+                <li>
+                    <span class="rules-highlight">SWIPER NO SWIPING:</span> Data theft, scraping, or trying to bypass account keys is completely prohibited. If you are caught trying to swipe access credentials or files that aren't yours, your account will be permanently banned. Keep your hands off other testers' setups!
+                </li>
+                <li>
+                    <span class="rules-highlight">Respect the Lobby Order:</span> Treat your fellow developers and players with respect. Avoid toxic outbursts or disruptive behavior that compromises the testing loop.
+                </li>
+                <li>
+                    <span class="rules-highlight">Combat Readiness and Fair Play:</span> Keep testing scenarios balanced and do not rig game room stats. Just like trying to survive an intense match in Forsaken against overwhelming forces, victory is only rewarding when your skills are authentic and you fight fair.
+                </li>
+                <li>
+                    <span class="rules-highlight">Survival of the System:</span> This revival requires teamwork to keep the servers standing. Do not leave your squad hanging or intentionally crash instances. We survive or fall together in this wasteland.
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div id="loginModal" class="modal-overlay" onclick="closeModalOnOverlay(event, 'loginModal')">
+        <div class="auth-card">
+            <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
+            <h2>Sign In</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUser">Username</label>
+                    <input type="text" id="loginUser" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="loginPass">Password</label>
+                    <input type="password" id="loginPass" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+            <div id="loginMessage" class="message"></div>
+        </div>
+    </div>
+
+    <div id="signupModal" class="modal-overlay" onclick="closeModalOnOverlay(event, 'signupModal')">
+        <div class="auth-card">
+            <button class="close-btn" onclick="closeModal('signupModal')">&times;</button>
+            <h2>Create Account</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupUser">Username</label>
+                    <input type="text" id="signupUser" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" required placeholder="name@example.com" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="signupPass">Password</label>
+                    <input type="password" id="signupPass" required autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="signupKey">Secret Registration Code</label>
+                    <input type="password" id="signupKey" required placeholder="Enter anti-bot secret key">
+                </div>
+                <button type="submit" class="submit-btn">Register</button>
+            </form>
+            <div id="signupMessage" class="message"></div>
+        </div>
+    </div>
+
+    <script>
+        // Uses relative path since it shares the same home domain now!
+        const API_BASE_URL = ""; 
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.getElementById('loginMessage').innerText = "";
+            document.getElementById('signupMessage').innerText = "";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function closeModalOnOverlay(event, modalId) {
+            if (event.target === document.getElementById(modalId)) {
+                closeModal(modalId);
+            }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUser').value;
+            const password = document.getElementById('loginPass').value;
+            const msgDiv = document.getElementById('loginMessage');
+
+            msgDiv.style.color = "#a0a0aa";
+            msgDiv.innerText = "Connecting...";
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    msgDiv.style.color = "#4caf50";
+                    msgDiv.innerText = `Welcome back, ${data.user.username}!`;
+                } else {
+                    msgDiv.style.color = "#f44336";
+                    msgDiv.innerText = data.message || "Login failed.";
+                }
+            } catch (err) {
+                msgDiv.style.color = "#f44336";
+                msgDiv.innerText = "Error: " + err.message;
+            }
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('signupUser').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPass').value;
+            const signupKey = document.getElementById('signupKey').value;
+            const msgDiv = document.getElementById('signupMessage');
+
+            msgDiv.style.color = "#a0a0aa";
+            msgDiv.innerText = "Processing profile...";
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password, signupKey })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    msgDiv.style.color = "#4caf50";
+                    msgDiv.innerText = "Account ready! Opening Login panel...";
+                    setTimeout(() => {
+                        closeModal('signupModal');
+                        openModal('loginModal');
+                        document.getElementById('loginUser').value = username;
+                    }, 2000);
+                } else {
+                    msgDiv.style.color = "#f44336";
+                    msgDiv.innerText = data.message || "Registration failed.";
+                }
+            } catch (err) {
+                msgDiv.style.color = "#f44336";
+                msgDiv.innerText = "Error: " + err.message;
+            }
+        });
+    </script>
+</body>
+</html>
