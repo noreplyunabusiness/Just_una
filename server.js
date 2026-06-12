@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path'); // Added for handling files
 require('dotenv').config();
 
 const app = express();
@@ -9,7 +10,7 @@ const PORT = process.env.PORT || 10000;
 // Middleware
 app.use(express.json());
 app.use(cors({
-    origin: '*', // Allows your Google Site to communicate with Render
+    origin: '*',
     methods: ['GET', 'POST']
 }));
 
@@ -22,15 +23,15 @@ mongoose.connect(process.env.MONGODB_URI)
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }, // Ideally hashed, but keeping it direct for alpha testing connection
+    password: { type: String, required: true }, 
     createdAt: { type: Date, default: Date.now }
 });
 
 const User = mongoose.model('User', userSchema);
 
-// Home route to check if server is awake
+// SERVE YOUR HOME PAGE HTML FILE DIRECTLY
 app.get('/', (req, res) => {
-    res.send('<h1>rec-una API Server is Awake and Ready!</h1>');
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // SIGNUP ROUTE
@@ -38,19 +39,15 @@ app.post('/api/signup', async (req, res) => {
     try {
         const { username, email, password, signupKey } = req.body;
 
-        // Check the secret key (matching your "swiper" or alpha key phrase)
-        // Adjust the phrase inside the quotes if you have a different key!
         if (signupKey !== "swiper no swiping") {
             return res.status(400).json({ success: false, message: "Invalid Registration Key!" });
         }
 
-        // Check if user already exists
         const existingUser = await User.findOne({ $or: [{ username }, { email }] });
         if (existingUser) {
             return res.status(400).json({ success: false, message: "Username or Email already taken." });
         }
 
-        // Save new user
         const newUser = new User({ username, email, password });
         await newUser.save();
 
@@ -66,7 +63,6 @@ app.post('/api/login', async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        // Find user by username
         const user = await User.findOne({ username });
         if (!user || user.password !== password) {
             return res.status(400).json({ success: false, message: "Invalid username or password." });
