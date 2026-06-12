@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UnaNet // Player Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background-color: #0b0c10; color: #f1f5f9; display: flex; height: 100vh; overflow: hidden; }
+        
+        /* REUSED GLOBAL SIDEBAR */
+        .sidebar { width: 260px; background-color: #151821; border-right: 1px solid #232a36; display: flex; flex-direction: column; padding: 20px 0; shrink: 0; }
+        .logo { font-size: 26px; font-weight: 900; color: #ff5722; text-transform: uppercase; padding: 0 25px 30px 25px; letter-spacing: 1px; cursor: pointer; }
+        .nav-links { flex-grow: 1; display: flex; flex-direction: column; gap: 5px; }
+        .nav-item { padding: 15px 25px; color: #94a3b8; text-decoration: none; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        .nav-item:hover { background-color: rgba(255, 87, 34, 0.1); color: #ff5722; }
+        .nav-item i { font-size: 20px; width: 24px; text-align: center; }
+
+        /* PROFILE WORKSPACE */
+        .profile-container { flex-grow: 1; overflow-y: auto; background-color: #0b0c10; display: flex; flex-direction: column; }
+        
+        .banner-space { height: 220px; background: linear-gradient(135deg, #1f2430 0%, #ff5722 100%); position: relative; }
+        
+        .profile-header-card { padding: 0 40px; position: relative; transform: translateY(-60px); display: flex; align-items: flex-end; gap: 25px; }
+        .huge-avatar { width: 130px; height: 130px; border-radius: 50%; border: 5px solid #0b0c10; background-color: #151821; object-fit: cover; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+        
+        .identity-box { margin-bottom: 10px; }
+        .display-username { font-size: 32px; font-weight: 800; color: white; margin: 0; }
+        .display-tagline { color: #ff5722; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+        
+        .content-split { padding: 0 40px 40px 40px; margin-top: -30px; display: grid; grid-template-columns: 1fr 2.5fr; gap: 30px; }
+        @media (max-width: 900px) { .content-split { grid-template-columns: 1fr; } }
+        
+        .info-panel { background-color: #151821; border: 1px solid #232a36; border-radius: 12px; padding: 20px; height: fit-content; }
+        .panel-heading { font-size: 13px; font-weight: bold; text-transform: uppercase; color: #94a3b8; margin-bottom: 10px; letter-spacing: 0.5px; }
+        .bio-text { font-size: 14px; line-height: 1.5; color: #cbd5e1; background: #0b0c10; padding: 12px; border-radius: 8px; border: 1px solid #1e2330; margin: 0 0 15px 0; }
+        
+        .stat-row { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #94a3b8; margin-top: 8px; }
+        .stat-row i { color: #ff5722; width: 16px; }
+
+        /* PLAYER CONCEPTS GRID */
+        .showcase-title { font-size: 20px; font-weight: 700; color: white; margin: 0 0 20px 0; display: flex; align-items: center; gap: 10px; }
+        .showcase-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px; }
+        .showcase-card { background-color: #151821; border: 1px solid #232a36; border-radius: 10px; overflow: hidden; border-bottom: 3px solid #151821; transition: 0.2s; }
+        .showcase-card:hover { border-bottom-color: #ff5722; transform: translateY(-2px); }
+        .showcase-img { width: 100%; height: 160px; object-fit: cover; background: #0b0c10; }
+        .showcase-meta { padding: 12px; font-weight: 600; font-size: 14px; color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo" onclick="window.location.href='/'">UnaNet</div>
+        <div class="nav-links">
+            <a href="/" class="nav-item"><i class="fa-solid fa-image"></i> Feed</a>
+            <a href="/rooms" class="nav-item"><i class="fa-solid fa-gamepad"></i> Rooms</a>
+            <a href="/rules" class="nav-item"><i class="fa-solid fa-book"></i> Guidelines</a>
+            <a href="/settings" class="nav-item" id="navSettings" style="display:none;"><i class="fa-solid fa-gear"></i> Settings</a>
+        </div>
+    </div>
+
+    <div class="profile-container">
+        <div class="banner-space"></div>
+        
+        <div class="profile-header-card">
+            <img src="https://i.imgur.com/6VB896R.png" class="huge-avatar" id="playerAvatar">
+            <div class="identity-box">
+                <h1 class="display-username" id="playerName">@Player</h1>
+                <div class="display-tagline" id="playerBadge">Just Una Player</div>
+            </div>
+        </div>
+
+        <div class="content-split">
+            <div class="info-panel">
+                <div class="panel-heading">Biography</div>
+                <p class="bio-text" id="playerBio">Sourcing biography variables...</p>
+                
+                <div class="panel-heading" style="margin-top: 20px;">Grid Metadata</div>
+                <div class="stat-row"><i class="fa-solid fa-calendar-days"></i> <span id="playerJoined">Initialized: --</span></div>
+                <div class="stat-row"><i class="fa-solid fa-shield-halved"></i> <span id="playerSecurity">2FA: Inactive</span></div>
+            </div>
+
+            <div>
+                <h3 class="showcase-title"><i class="fa-solid fa-folder-open" style="color:#ff5722;"></i> Player Publications</h3>
+                <div class="showcase-grid" id="playerShowcase">
+                    <p style="color:#94a3b8;">Scanning database cluster nodes...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = "";
+        
+        // Extract target username straight from the URL path (/user/elliot -> elliot)
+        const pathSegments = window.location.pathname.split('/');
+        const targetUsername = pathSegments[pathSegments.length - 1];
+
+        if (localStorage.getItem('rec_user')) {
+            document.getElementById('navSettings').style.display = 'flex';
+        }
+
+        async function fetchProfileData() {
+            try {
+                // 1. Fetch Profile Info
+                const res = await fetch(`${API_BASE_URL}/api/user/profile/${targetUsername}`);
+                const data = await res.json();
+                
+                if (!data.success) {
+                    document.getElementById('playerName').innerText = "Player Disconnected";
+                    document.getElementById('playerBio').innerText = "This node does not exist in the database arrays.";
+                    return;
+                }
+
+                document.getElementById('playerName').innerText = `@${data.profile.username}`;
+                document.getElementById('playerAvatar').src = data.profile.pfpUrl;
+                document.getElementById('playerBadge').innerText = data.profile.status;
+                document.getElementById('playerBio').innerText = data.profile.bio;
+                document.getElementById('playerJoined').innerText = `Initialized: ${new Date(data.profile.joined).toLocaleDateString()}`;
+
+                // 2. Fetch Only This User's Feed Posts
+                const feedRes = await fetch(`${API_BASE_URL}/api/photos`);
+                const feedData = await feedRes.json();
+                const showcase = document.getElementById('playerShowcase');
+                
+                if (feedData.success) {
+                    const playerPosts = feedData.photos.filter(p => p.username.toLowerCase() === targetUsername.toLowerCase());
+                    
+                    if (playerPosts.length === 0) {
+                        showcase.innerHTML = `<p style="color:#475569; font-size:14px;">This player hasn't published any concepts yet.</p>`;
+                        return;
+                    }
+
+                    showcase.innerHTML = "";
+                    playerPosts.forEach(post => {
+                        const card = document.createElement('div');
+                        card.className = "showcase-card";
+                        card.innerHTML = `
+                            <img src="${post.imageUrl}" class="showcase-img" onerror="this.style.display='none'">
+                            <div class="showcase-meta">${post.title}</div>
+                        `;
+                        showcase.appendChild(card);
+                    });
+                }
+            } catch(e) {
+                document.getElementById('playerShowcase').innerHTML = `<p style="color:#f44336;">Failed to connect to data loops.</p>`;
+            }
+        }
+
+        window.onload = fetchProfileData;
+    </script>
+</body>
+                  </html>
