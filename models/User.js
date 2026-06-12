@@ -1,21 +1,25 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs'); // Import the scrambler tool
+const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true, trim: true },
     password: { type: String, required: true },
     role: { type: String, default: 'player' },
+    
+    // NEW PLAYER STATS
+    level: { type: Number, default: 1 },
+    xp: { type: Number, default: 0 },
+    tokens: { type: Number, default: 0 },
+    unlockedCosmetics: { type: [String], default: [] }, // Array of item IDs
+    
     createdAt: { type: Date, default: Date.now }
 });
 
-// A "pre-save" hook: This runs automatically right before a user is saved to the DB
 UserSchema.pre('save', async function (next) {
-    // Only scramble the password if it's new or being changed
     if (!this.isModified('password')) return next();
-
     try {
-        const salt = await bcrypt.genSalt(10); // Generate a random security key
-        this.password = await bcrypt.hash(this.password, salt); // Scramble it!
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
         next();
     } catch (err) {
         next(err);
