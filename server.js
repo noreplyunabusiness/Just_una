@@ -153,5 +153,23 @@ app.post('/api/user/settings', async (req, res) => {
         res.json({ success: true, status: user.status });
     } catch (error) { res.status(500).json({ success: false }); }
 });
-
+// FETCH AN INDIVIDUAL USER'S PROFILE PUBLIC DATA
+app.get('/api/user/profile/:username', async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.params.username });
+        if (!user) return res.status(404).json({ success: false, message: "User not found." });
+        
+        // Only send back public info, NEVER send the password!
+        res.json({ 
+            success: true, 
+            profile: {
+                username: user.username,
+                status: user.status,
+                joined: user.createdAt
+            } 
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Error fetching user profile." });
+    }
+});
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
