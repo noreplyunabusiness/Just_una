@@ -1,0 +1,12 @@
+{
+  "name": "rec-una-api",
+  "version": "1.0.0",
+  "description": "Backbone API for the rec-una revival",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
