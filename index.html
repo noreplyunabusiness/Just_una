@@ -3,342 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Just Una! // Universe Hub</title>
+    <title>UnaNet // Player Hub</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0d0e12;
-            color: #e2e8f0;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            background-color: #161920;
-            border-bottom: 2px solid #242936;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: 900;
-            color: #00ffcc;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            text-shadow: 0 0 12px rgba(0, 255, 204, 0.4);
-        }
-
-        .nav-auth-buttons button, .user-badge button {
-            background-color: transparent;
-            border: 1px solid #3b4252;
-            color: #94a3b8;
-            padding: 10px 20px;
-            margin-left: 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .nav-auth-buttons button:hover, .user-badge button:hover {
-            border-color: #00ffcc;
-            color: #00ffcc;
-        }
-
-        .btn-signup {
-            background-color: #00ffcc !important;
-            border-color: #00ffcc !important;
-            color: #0d0e12 !important;
-        }
-
-        .user-badge {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .username-display {
-            font-weight: bold;
-            color: #00ffcc;
-        }
-
-        .main-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 25px;
-            display: grid;
-            grid-template-columns: 1.2fr 2fr 1fr;
-            gap: 25px;
-        }
-
-        @media (max-width: 1000px) {
-            .main-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .column {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .card {
-            background-color: #161920;
-            border: 1px solid #242936;
-            border-radius: 12px;
-            padding: 22px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #242936;
-            padding-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Blueprint Spec Tracker */
-        .spec-item {
-            background-color: #1e2330;
-            border-left: 4px solid #00ffcc;
-            padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        .spec-title { font-weight: bold; color: #ffffff; margin-bottom: 4px; }
-        .spec-status { font-size: 11px; color: #00ffcc; text-transform: uppercase; font-weight: bold; }
-
-        /* Form styling */
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; margin-bottom: 5px; color: #94a3b8; font-size: 13px; }
-        .form-group input, .form-group textarea {
-            width: 100%; padding: 10px; background-color: #0d0e12;
-            border: 1px solid #242936; border-radius: 8px; color: #e2e8f0;
-            font-size: 14px; box-sizing: border-box; resize: none;
-        }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #00ffcc; }
-
-        .action-btn {
-            width: 100%; padding: 12px; background-color: #00ffcc;
-            border: none; border-radius: 8px; color: #0d0e12; font-size: 14px;
-            font-weight: bold; cursor: pointer; transition: transform 0.2s;
-        }
-        .action-btn:hover { transform: translateY(-1px); background-color: #00e6b8; }
-
-        /* Chat Post System mapping */
-        .photo-card {
-            background-color: #161920; border: 1px solid #242936; border-radius: 12px;
-            overflow: hidden; margin-bottom: 20px;
-        }
-        .photo-header {
-            padding: 12px 20px; display: flex; justify-content: space-between;
-            align-items: center; background-color: #1e2330;
-        }
-        .clickable-user { font-weight: bold; color: #00ffcc; cursor: pointer; text-decoration: none; }
-        .clickable-user:hover { text-decoration: underline; }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background-color: #0f1115; color: #f1f5f9; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background-color: #181c24; border-bottom: 3px solid #ff5722; }
+        .logo-group { display: flex; align-items: center; gap: 20px; }
+        .logo { font-size: 24px; font-weight: 900; color: #ff5722; text-transform: uppercase; cursor: pointer; }
+        nav a { color: #94a3b8; text-decoration: none; font-weight: 600; margin-right: 15px; font-size: 14px; }
+        nav a:hover { color: #ff5722; }
         
-        .photo-display { width: 100%; max-height: 300px; background-color: #0d0e12; object-fit: contain; display: block; }
-        .photo-info { padding: 15px 20px; }
-        .photo-title { font-size: 16px; font-weight: bold; color: #ffffff; }
+        .nav-auth-buttons button, .user-badge button { background: transparent; border: 1px solid #334155; color: #f1f5f9; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        .nav-auth-buttons button:hover { border-color: #ff5722; }
+        .btn-signup { background-color: #ff5722 !important; border: none !important; color: white !important; }
+        
+        .main-container { max-width: 1000px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
+        @media (max-width: 800px) { .main-container { grid-template-columns: 1fr; } }
+        
+        .card { background-color: #181c24; border: 1px solid #232a36; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .section-title { font-size: 16px; font-weight: bold; text-transform: uppercase; color: #94a3b8; border-bottom: 1px solid #232a36; padding-bottom: 8px; margin-bottom: 15px; }
+        
+        .feed-post { background-color: #1c212c; border: 1px solid #2d3646; border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
+        .post-header { padding: 12px; display: flex; align-items: center; gap: 10px; background-color: #181c24; }
+        .post-pfp { width: 35px; height: 35px; border-radius: 50%; border: 1px solid #ff5722; object-fit: cover; }
+        .post-user { font-weight: bold; color: #ff5722; cursor: pointer; }
+        .post-img { width: 100%; max-height: 400px; object-fit: contain; background: #0f1115; display: block; }
+        
+        .comments-box { background: #131720; padding: 12px; border-top: 1px solid #232a36; }
+        .comment-item { font-size: 13px; margin-bottom: 6px; }
+        .comment-input-row { display: flex; gap: 8px; margin-top: 10px; }
+        .comment-input-row input { flex-grow: 1; padding: 8px; background: #181c24; border: 1px solid #232a36; color: white; border-radius: 6px; }
+        .comment-input-row button { background: #ff5722; border: none; color: white; font-weight: bold; padding: 0 12px; border-radius: 6px; cursor: pointer; }
 
-        .comments-section { background-color: #0d0e12; padding: 15px; border-top: 1px solid #242936; }
-        .comment-list { max-height: 120px; overflow-y: auto; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; }
-        .comment-item { font-size: 13px; }
-        .comment-input-row { display: flex; gap: 8px; }
-        .comment-input-row input { flex-grow: 1; padding: 6px 12px; background: #161920; border: 1px solid #242936; border-radius: 6px; color: white; }
-        .comment-input-row button { background: #00ffcc; border: none; color: #0d0e12; padding: 0 12px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        /* General Forms */
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; color: #94a3b8; font-size: 12px; margin-bottom: 4px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 10px; background: #0f1115; border: 1px solid #232a36; color: white; border-radius: 6px; box-sizing: border-box; }
+        .action-btn { width: 100%; padding: 10px; background: #ff5722; border: none; color: white; font-weight: bold; border-radius: 6px; cursor: pointer; }
 
-        /* Dialog Overlays */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.85); display: flex;
-            justify-content: center; align-items: center; z-index: 1000;
-            opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
-        }
+        /* Modals */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .auth-card { background-color: #161920; border: 1px solid #242936; border-radius: 14px; padding: 30px; width: 100%; max-width: 380px; position: relative; }
-        .close-btn { position: absolute; top: 12px; right: 18px; background: none; border: none; color: #94a3b8; font-size: 22px; cursor: pointer; }
-        .close-btn:hover { color: #00ffcc; }
-        .message { margin-top: 12px; text-align: center; font-size: 13px; }
+        .auth-card { background: #181c24; padding: 25px; border-radius: 12px; width: 100%; max-width: 360px; position: relative; }
+        .close-btn { position: absolute; top: 10px; right: 15px; background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
 
-        .profile-popup-card {
-            background-color: #161920; border: 2px solid #00ffcc; border-radius: 16px; padding: 25px;
-            width: 100%; max-width: 340px; text-align: center; position: relative;
-        }
+        .profile-card { background: #181c24; border: 2px solid #ff5722; border-radius: 12px; padding: 20px; text-align: center; max-width: 300px; width: 100%; }
+        .large-pfp { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #ff5722; object-fit: cover; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo" onclick="location.reload()">Just Una!</div>
+        <div class="logo-group">
+            <div class="logo" onclick="location.reload()">UnaNet</div>
+            <nav>
+                <a href="/">Feed</a>
+                <a href="/rules">Rules</a>
+                <a href="/settings" id="navSettingsLink" style="display:none;">Settings</a>
+            </nav>
+        </div>
         <div id="loggedOutNav" class="nav-auth-buttons">
             <button onclick="openModal('loginModal')">Login</button>
             <button class="btn-signup" onclick="openModal('signupModal')">Sign Up</button>
         </div>
-        <div id="loggedInNav" class="user-badge" style="display: none;">
-            <span>Tester: <span id="navUsername" class="username-display" style="cursor:pointer;" onclick="viewUserProfile(currentUser)">--</span></span>
+        <div id="loggedInNav" class="user-badge" style="display: none; align-items: center; gap: 10px;">
+            <img src="" id="headerPfp" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
+            <span id="navUsername" class="username-display" style="cursor:pointer; font-weight:bold; color:#ff5722;">Player</span>
             <button onclick="logout()">Logout</button>
         </div>
     </header>
 
     <div class="main-container">
-        
-        <div class="column">
-            <div class="card">
-                <div class="section-title">🗺️ Game Manifest Specs</div>
-                <div class="spec-item">
-                    <div class="spec-title">Main Lobby Lounge</div>
-                    <div class="spec-status">Planning Phase // Mirrors & DJ Booth</div>
-                </div>
-                <div class="spec-item">
-                    <div class="spec-title">Player Beans Architecture</div>
-                    <div class="spec-status">Awaiting Chromebook Input</div>
-                </div>
-                <div class="spec-item">
-                    <div class="spec-title">Data Synced Variables</div>
-                    <div class="spec-status" style="color: #4caf50;">ONLINE // MongoDB Live</div>
-                </div>
-            </div>
+        <div>
+            <div class="section-title">Community Timeline</div>
+            <div id="photoFeed"><p style="color:#94a3b8;">Sourcing timeline streams...</p></div>
         </div>
 
-        <div class="column">
-            <div class="card">
-                <div class="section-title">💬 Dev Lounge Feedback Loop</div>
-                <div id="photoFeed">
-                    <p style="color:#94a3b8;">Scanning database cluster nodes...</p>
-                </div>
+        <div>
+            <div class="card" id="uploadWidget" style="display:none;">
+                <div class="section-title">Share a Concept Link</div>
+                <div class="form-group"><label>Reference Web URL</label><input type="text" id="postImgUrl" placeholder="https://..."></div>
+                <div class="form-group"><label>Header / Title</label><input type="text" id="postTitle"></div>
+                <div class="form-group"><label>Field Notes</label><textarea id="postCaption" rows="2"></textarea></div>
+                <button class="action-btn" onclick="submitPhoto()">Publish to Feed</button>
+                <div id="uploadMessage" style="margin-top:10px; font-size:12px; text-align:center;"></div>
             </div>
-        </div>
-
-        <div class="column">
-            <div class="card">
-                <div class="section-title">⚙️ Dev Settings</div>
-                <div id="settingsGuestMsg"><p style="color: #94a3b8; font-size: 13px; margin:0;">Login to edit custom taglines.</p></div>
-                <div id="settingsFormBox" style="display: none;">
-                    <div class="form-group">
-                        <label>Your Dev Rank Tagline</label>
-                        <input type="text" id="userStatusInput">
-                    </div>
-                    <button class="action-btn" onclick="updateSettings()">Save Variable</button>
-                    <div id="settingsMessage" class="message"></div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="section-title">📢 Broadcast Concept / Link</div>
-                <div id="uploadGuestMsg"><p style="color: #94a3b8; font-size: 13px; margin:0;">Login to push ideas to the grid.</p></div>
-                <div id="uploadFormBox" style="display: none;">
-                    <div class="form-group"><label>Reference Web Link (or Imgur/Discord)</label><input type="text" id="postImgUrl" placeholder="https://..."></div>
-                    <div class="form-group"><label>Concept Topic Title</label><input type="text" id="postTitle"></div>
-                    <div class="form-group"><label>Detailed Field Notes</label><textarea id="postCaption" rows="3"></textarea></div>
-                    <button class="action-btn" onclick="submitPhoto()">Transmit Log</button>
-                    <div id="uploadMessage" class="message"></div>
-                </div>
-            </div>
+            <div class="card" id="guestWidget"><p style="color:#94a3b8; font-size:13px; margin:0; text-align:center;">Sign in to broadcast concepts onto UnaNet.</p></div>
         </div>
     </div>
 
-    <div id="signupModal" class="modal-overlay">
-        <div class="auth-card">
-            <button class="close-btn" onclick="closeModal('signupModal')">&times;</button>
-            <h2 style="margin-top:0;">Secure Account Entry</h2>
-            <form id="signupForm">
-                <div class="form-group"><label>Username</label><input type="text" id="signupUser" required></div>
-                <div class="form-group"><label>Email</label><input type="email" id="signupEmail" required></div>
-                <div class="form-group"><label>Password</label><input type="password" id="signupPass" required></div>
-                <div class="form-group"><label>Master System Key</label><input type="password" id="signupKey" required placeholder="swiper no swiping"></div>
-                <button type="submit" class="action-btn">Register Node</button>
-            </form>
-            <div id="signupMessage" class="message"></div>
-        </div>
-    </div>
-
-    <div id="loginModal" class="modal-overlay">
-        <div class="auth-card">
-            <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
-            <h2 style="margin-top:0;">Decrypt Profile Keys</h2>
-            <form id="loginForm">
-                <div class="form-group"><label>Username</label><input type="text" id="loginUser" required></div>
-                <div class="form-group"><label>Password</label><input type="password" id="loginPass" required></div>
-                <button type="submit" class="action-btn">Initialize</button>
-            </form>
-            <div id="loginMessage" class="message"></div>
-        </div>
-    </div>
-
+    <div id="signupModal" class="modal-overlay"><div class="auth-card"><button class="close-btn" onclick="closeModal('signupModal')">&times;</button><h3>Create Player Profile</h3><form id="signupForm"><div class="form-group"><label>Username</label><input type="text" id="signupUser" required></div><div class="form-group"><label>Email</label><input type="email" id="signupEmail" required></div><div class="form-group"><label>Password</label><input type="password" id="signupPass" required></div><div class="form-group"><label>System Activation Key</label><input type="password" id="signupKey" required placeholder="swiper no swiping"></div><button type="submit" class="action-btn">Register Player</button></form><div id="signupMessage" class="message"></div></div></div>
+    <div id="loginModal" class="modal-overlay"><div class="auth-card"><button class="close-btn" onclick="closeModal('loginModal')">&times;</button><h3>Authenticate Player Profile</h3><form id="loginForm"><div class="form-group"><label>Username</label><input type="text" id="loginUser" required></div><div class="form-group"><label>Password</label><input type="password" id="loginPass" required></div><button type="submit" class="action-btn">Login</button></form><div id="loginMessage" class="message"></div></div></div>
+    
     <div id="profileModal" class="modal-overlay" onclick="if(event.target===this) closeModal('profileModal')">
-        <div class="profile-popup-card">
+        <div class="profile-card">
             <button class="close-btn" onclick="closeModal('profileModal')">&times;</button>
-            <h2 id="profUsername" style="margin: 0 0 5px 0; color: #00ffcc;">--</h2>
-            <div style="font-size: 11px; color: #94a3b8; letter-spacing: 1px; margin-bottom: 15px; font-weight:bold;">JUST UNA! MAIN CORE TEAM MEMBER</div>
-            <div style="background: #0d0e12; padding: 12px; border-radius: 6px; border: 1px solid #242936; text-align: left; margin-bottom: 12px;">
-                <span id="profStatus" style="font-size: 13px; color: #e2e8f0;">Loading information...</span>
-            </div>
-            <div style="font-size: 11px; color: #4e5569;" id="profJoinedDate">--</div>
+            <img src="" id="profPfp" class="large-pfp">
+            <h2 id="profUsername" style="margin:5px 0; color:white;">--</h2>
+            <div id="profStatus" style="color:#ff5722; font-size:12px; font-weight:bold; margin-bottom:12px;">PLAYER</div>
+            <p id="profBio" style="font-size:13px; color:#94a3b8; background:#0f1115; padding:10px; border-radius:6px; text-align:left;"></p>
+            <div style="font-size:11px; color:#475569;" id="profJoinedDate">--</div>
         </div>
     </div>
 
     <script>
-        const API_BASE_URL = ""; 
+        const API_BASE_URL = "";
         let currentUser = localStorage.getItem('rec_user') || null;
-        let userTagline = localStorage.getItem('rec_status') || "Just Una Developer";
 
         function initSession() {
             if (currentUser) {
                 document.getElementById('loggedOutNav').style.display = 'none';
                 document.getElementById('loggedInNav').style.display = 'flex';
                 document.getElementById('navUsername').innerText = currentUser;
-                document.getElementById('settingsGuestMsg').style.display = 'none';
-                document.getElementById('settingsFormBox').style.display = 'block';
-                document.getElementById('userStatusInput').value = userTagline;
-                document.getElementById('uploadGuestMsg').style.display = 'none';
-                document.getElementById('uploadFormBox').style.display = 'block';
-            } else {
-                document.getElementById('loggedOutNav').style.display = 'block';
-                document.getElementById('loggedInNav').style.display = 'none';
-                document.getElementById('settingsGuestMsg').style.display = 'block';
-                document.getElementById('settingsFormBox').style.display = 'none';
-                document.getElementById('uploadGuestMsg').style.display = 'block';
-                document.getElementById('uploadFormBox').style.display = 'none';
+                document.getElementById('headerPfp').src = localStorage.getItem('rec_pfp') || "https://i.imgur.com/6VB896R.png";
+                document.getElementById('navSettingsLink').style.display = 'inline-block';
+                document.getElementById('uploadWidget').style.display = 'block';
+                document.getElementById('guestWidget').style.display = 'none';
+                document.getElementById('navUsername').onclick = () => viewUserProfile(currentUser);
             }
             loadFeed();
         }
 
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-        function logout() { localStorage.clear(); currentUser = null; location.reload(); }
+        function logout() { localStorage.clear(); location.reload(); }
 
-        async function viewUserProfile(targetUser) {
+        async function viewUserProfile(username) {
             openModal('profileModal');
-            document.getElementById('profUsername').innerText = `@${targetUser}`;
             try {
-                const response = await fetch(`${API_BASE_URL}/api/user/profile/${targetUser}`);
+                const response = await fetch(`${API_BASE_URL}/api/user/profile/${username}`);
                 const data = await response.json();
                 if (data.success) {
-                    document.getElementById('profStatus').innerText = data.profile.status || "No bio variables declared.";
-                    document.getElementById('profJoinedDate').innerText = `Grid Initialized: ${new Date(data.profile.joined).toLocaleDateString()}`;
+                    document.getElementById('profUsername').innerText = `@${data.profile.username}`;
+                    document.getElementById('profPfp').src = data.profile.pfpUrl;
+                    document.getElementById('profStatus').innerText = data.profile.status;
+                    document.getElementById('profBio').innerText = data.profile.bio;
+                    document.getElementById('profJoinedDate').innerText = `Joined Grid: ${new Date(data.profile.joined).toLocaleDateString()}`;
                 }
-            } catch (err) { document.getElementById('profStatus').innerText = "Matrix timeout."; }
+            } catch(e) { }
         }
 
-        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+        document.getElementById('signupForm').addEventListener('submit', async(e)=>{
             e.preventDefault();
-            const msg = document.getElementById('signupMessage');
             try {
                 const response = await fetch(`${API_BASE_URL}/api/signup`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {'Content-Type':'application/json'},
                     body: JSON.stringify({
                         username: document.getElementById('signupUser').value,
                         email: document.getElementById('signupEmail').value,
@@ -347,77 +156,47 @@
                     })
                 });
                 const data = await response.json();
-                if (data.success) {
-                    msg.style.color = "#4caf50"; msg.innerText = "Authorized! Initializing signin window...";
-                    setTimeout(() => { closeModal('signupModal'); openModal('loginModal'); }, 1200);
-                } else { msg.style.color = "#f44336"; msg.innerText = data.message; }
-            } catch(e) { msg.style.color = "#f44336"; msg.innerText = "Sync error."; }
+                if(data.success) { closeModal('signupModal'); openModal('loginModal'); }
+            } catch(err){}
         });
 
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        document.getElementById('loginForm').addEventListener('submit', async(e)=>{
             e.preventDefault();
-            const msg = document.getElementById('loginMessage');
             try {
                 const response = await fetch(`${API_BASE_URL}/api/login`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {'Content-Type':'application/json'},
                     body: JSON.stringify({
                         username: document.getElementById('loginUser').value,
                         password: document.getElementById('loginPass').value
                     })
                 });
                 const data = await response.json();
-                if (data.success) {
+                if(data.success) {
                     localStorage.setItem('rec_user', data.user.username);
-                    localStorage.setItem('rec_status', data.user.status || "Just Una Developer");
-                    currentUser = data.user.username;
-                    userTagline = data.user.status || "Just Una Developer";
-                    closeModal('loginModal');
-                    initSession();
-                } else { msg.style.color = "#f44336"; msg.innerText = data.message; }
-            } catch(e) { msg.style.color = "#f44336"; msg.innerText = "Auth break."; }
-        });
-
-        async function updateSettings() {
-            const statusVal = document.getElementById('userStatusInput').value;
-            const msg = document.getElementById('settingsMessage');
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/user/settings`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: currentUser, status: statusVal })
-                });
-                const data = await response.json();
-                if (data.success) {
-                    localStorage.setItem('rec_status', data.status);
-                    msg.style.color = "#4caf50"; msg.innerText = "Rank tagline saved.";
-                    setTimeout(() => msg.innerText = "", 2000);
+                    localStorage.setItem('rec_pfp', data.user.pfpUrl);
+                    localStorage.setItem('rec_status', data.user.status);
+                    localStorage.setItem('rec_bio', data.user.bio);
+                    localStorage.setItem('rec_2fa', data.user.twoFactorEnabled);
+                    location.reload();
                 }
-            } catch(e) { msg.style.color = "#f44336"; msg.innerText = "Update broken."; }
-        }
+            } catch(err){}
+        });
 
         async function submitPhoto() {
             const imageUrl = document.getElementById('postImgUrl').value;
             const title = document.getElementById('postTitle').value;
             const caption = document.getElementById('postCaption').value;
-            const msg = document.getElementById('uploadMessage');
-            if (!imageUrl || !title) { msg.style.color = "#f44336"; msg.innerText = "Link/Title required."; return; }
+            if(!imageUrl || !title) return;
             try {
-                const response = await fetch(`${API_BASE_URL}/api/photos`, {
+                const res = await fetch(`${API_BASE_URL}/api/photos`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {'Content-Type':'application/json'},
                     body: JSON.stringify({ username: currentUser, imageUrl, title, caption })
                 });
-                const data = await response.json();
-                if (data.success) {
-                    msg.style.color = "#4caf50"; msg.innerText = "Concept shared successfully!";
-                    document.getElementById('postImgUrl').value = "";
-                    document.getElementById('postTitle').value = "";
-                    document.getElementById('postCaption').value = "";
-                    loadFeed();
-                    setTimeout(() => msg.innerText = "", 2000);
-                }
-            } catch(e) { msg.style.color = "#f44336"; msg.innerText = "Transmission down."; }
+                const data = await res.json();
+                if(data.success) { location.reload(); }
+            } catch(e){}
         }
 
         async function loadFeed() {
@@ -425,65 +204,61 @@
             try {
                 const response = await fetch(`${API_BASE_URL}/api/photos`);
                 const data = await response.json();
-                
-                if (!data.success || data.photos.length === 0) {
-                    container.innerHTML = `<p style="color:#94a3b8; text-align:center;">Lounge room clear. Drop the first blueprint concept link!</p>`;
+                if(!data.success || data.photos.length === 0) {
+                    container.innerHTML = `<p style="color:#94a3b8; text-align:center;">The feed track is empty.</p>`;
                     return;
                 }
-
                 container.innerHTML = "";
-                data.photos.forEach(photo => {
+                for(let photo of data.photos) {
+                    // Fetch poster's pfp dynamically
+                    const pRes = await fetch(`${API_BASE_URL}/api/user/profile/${photo.username}`);
+                    const pData = await pRes.json();
+                    const currentPfp = pData.success ? pData.profile.pfpUrl : "https://i.imgur.com/6VB896R.png";
+
                     let commentsMarkup = "";
                     photo.comments.forEach(c => {
-                        commentsMarkup += `
-                            <div class="comment-item">
-                                <span class="clickable-user" onclick="viewUserProfile('${c.username}')">${c.username}:</span>
-                                <span style="color:#cbd5e1;">${c.text}</span>
-                            </div>`;
+                        commentsMarkup += `<div class="comment-item"><span class="post-user" onclick="viewUserProfile('${c.username}')">${c.username}:</span> <span style="color:#cbd5e1;">${c.text}</span></div>`;
                     });
 
                     const card = document.createElement('div');
-                    card.className = "photo-card";
+                    card.className = "feed-post";
                     card.innerHTML = `
-                        <div class="photo-header">
-                            <span class="clickable-user" onclick="viewUserProfile('${photo.username}')">@${photo.username}</span>
-                            <span style="font-size:11px; color:#4e5569; font-weight:bold;">IDEA LOG</span>
+                        <div class="post-header">
+                            <img src="${currentPfp}" class="post-pfp">
+                            <span class="post-user" onclick="viewUserProfile('${photo.username}')">@${photo.username}</span>
                         </div>
-                        <img src="${photo.imageUrl}" class="photo-display" onerror="this.style.display='none'">
-                        <div class="photo-info">
+                        <img src="${photo.imageUrl}" class="post-img" onerror="this.style.display='none'">
+                        <div style="padding:15px;">
                             <div class="photo-title">${photo.title}</div>
-                            <p style="color:#94a3b8; font-size:13px; margin: 5px 0 0 0;">${photo.caption || ""}</p>
+                            <p style="color:#94a3b8; font-size:13px; margin:5px 0 0 0;">${photo.caption || ""}</p>
                         </div>
-                        <div class="comments-section">
-                            <div class="comment-list">
-                                ${commentsMarkup || '<span style="font-size:11px; color:#4e5569;">No team replies logged.</span>'}
-                            </div>
+                        <div class="comments-box">
+                            <div class="comment-list">${commentsMarkup || '<span style="color:#475569; font-size:12px;">No replies.</span>'}</div>
                             <div class="comment-input-row">
-                                <input type="text" id="comment-input-${photo._id}" placeholder="${currentUser ? 'Reply to concept...' : 'Login to reply...'}" ${currentUser ? '' : 'disabled'}>
-                                <button onclick="postComment('${photo._id}')" ${currentUser ? '' : 'disabled'}>Send</button>
+                                <input type="text" id="comment-input-${photo._id}" placeholder="${currentUser?'Add a public reply...':'Login to reply...'}" ${currentUser?'':'disabled'}>
+                                <button onclick="postComment('${photo._id}')" ${currentUser?'':'disabled'}>Reply</button>
                             </div>
                         </div>
                     `;
                     container.appendChild(card);
-                });
-            } catch(e) { container.innerHTML = `<p style="color:#f44336; text-align:center;">Network fetch error.</p>`; }
+                }
+            } catch(e){}
         }
 
-        async function postComment(photoId) {
-            const input = document.getElementById(`comment-input-${photoId}`);
-            if (!input.value.trim()) return;
+        async function postComment(id) {
+            const val = document.getElementById(`comment-input-${id}`).value;
+            if(!val.trim()) return;
             try {
-                await fetch(`${API_BASE_URL}/api/photos/${photoId}/comment`, {
+                await fetch(`${API_BASE_URL}/api/photos/${id}/comment`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: currentUser, text: input.value })
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({ username: currentUser, text: val })
                 });
-                input.value = "";
-                loadFeed();
-            } catch(e) { console.error("Comment error."); }
+                location.reload();
+            } catch(e){}
         }
 
         window.onload = initSession;
     </script>
 </body>
-    </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </html>
