@@ -49,7 +49,7 @@ const Photo = mongoose.model('Photo', photoSchema);
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/rules', (req, res) => res.sendFile(path.join(__dirname, 'rules.html')));
 app.get('/settings', (req, res) => res.sendFile(path.join(__dirname, 'settings.html')));
-
+app.get('/user/:username', (req, res) => res.sendFile(path.join(__dirname, 'profile.html')));
 // SIGNUP & LOGIN
 app.post('/api/signup', async (req, res) => {
     try {
