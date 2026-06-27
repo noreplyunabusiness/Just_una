@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Just Una!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0d0f;--surface:#16161a;--card:#1c1c22;--border:#2a2a34;--border-hover:#3a3a48;
+  --accent:#ff5f2e;--accent-dim:rgba(255,95,46,0.12);--accent-hover:#ff7347;
+  --text:#e8e8ec;--muted:#88889a;--danger:#f44336;--success:#22c55e;
+  --radius:10px;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;flex-shrink:0}
+.logo{font-family:'Space Grotesk',sans-serif;font-weight:900;font-size:20px;color:var(--text);cursor:pointer;letter-spacing:-0.5px;user-select:none}
+.logo span{color:var(--accent)}
+nav{display:flex;gap:4px;align-items:center}
+.nav-btn{background:transparent;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:color .15s,background .15s}
+.nav-btn:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.nav-btn.active{color:var(--accent);background:var(--accent-dim)}
+.auth-area{display:flex;gap:8px;align-items:center}
+.btn{padding:7px 16px;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text);transition:background .15s,border-color .15s;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:rgba(255,255,255,0.06);border-color:var(--border-hover)}
+.btn-accent{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-accent:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn-danger{border-color:var(--danger);color:var(--danger);padding:5px 10px;font-size:11px}
+.btn-danger:hover{background:rgba(244,67,54,0.1)}
+.btn-success{border-color:var(--success);color:var(--success);padding:5px 10px;font-size:11px}
+.btn-success:hover{background:rgba(34,197,94,0.1)}
+.btn-sm{padding:5px 12px;font-size:12px}
+.user-chip{display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 10px 4px 4px;border-radius:20px;border:1px solid var(--border);background:var(--card);transition:border-color .15s}
+.user-chip:hover{border-color:var(--accent)}
+.user-chip img{width:26px;height:26px;border-radius:50%;object-fit:cover;border:1px solid var(--accent)}
+.user-chip span{font-size:12px;font-weight:700;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+main{flex:1;overflow-y:auto;padding:28px 24px;max-width:1200px;width:100%;margin:0 auto}
+.page{display:none}
+.page.active{display:block}
+.page-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px}
+.page-eyebrow{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.page-title{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:900;letter-spacing:-0.5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.post-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:border-color .2s,transform .15s}
+.post-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.post-card-img{width:100%;height:180px;object-fit:cover;display:block;background:#111}
+.post-card-img-placeholder{width:100%;height:180px;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:12px}
+.post-card-img-placeholder i{font-size:28px}
+.post-card-body{padding:14px}
+.post-badge{display:inline-block;background:var(--accent-dim);color:var(--accent);font-size:10px;font-weight:700;letter-spacing:.5px;padding:3px 8px;border-radius:4px;margin-bottom:8px;text-transform:uppercase}
+.post-title{font-weight:700;font-size:14px;line-height:1.35;margin-bottom:6px;color:var(--text)}
+.post-caption{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:10px}
+.post-author{font-size:12px;font-weight:700;color:var(--accent)}
+.room-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;cursor:pointer;transition:border-color .2s,transform .15s;display:flex;flex-direction:column;gap:10px}
+.room-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.room-card-name{font-weight:700;font-size:15px}
+.room-card-meta{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:12px}
+.room-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block}
+.rules-content{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;max-width:720px}
+.rules-content h3{font-size:16px;font-weight:700;color:var(--accent);margin:20px 0 8px}
+.rules-content h3:first-child{margin-top:0}
+.rules-content p,.rules-content li{font-size:14px;color:var(--muted);line-height:1.7}
+.rules-content ul{padding-left:18px}
+.rules-content .key-box{margin-top:24px;background:var(--accent-dim);border:1px solid var(--accent);border-radius:8px;padding:14px 18px}
+.rules-content .key-box p{color:var(--text);font-size:13px}
+.rules-content .key-box code{color:var(--accent);font-size:14px;font-weight:700}
+.profile-header{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;display:flex;align-items:center;gap:20px;margin-bottom:20px;flex-wrap:wrap}
+.profile-avatar{width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);flex-shrink:0}
+.profile-name{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:900}
+.profile-stats{display:flex;gap:20px;margin-top:6px;flex-wrap:wrap}
+.profile-stat{font-size:12px;color:var(--muted)}
+.profile-stat span{font-weight:700;color:var(--text);display:block;font-size:16px}
+
+/* ADMIN TABS */
+.admin-tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:0}
+.admin-tab{background:transparent;border:none;color:var(--muted);font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:10px 16px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s}
+.admin-tab:hover{color:var(--text)}
+.admin-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.admin-panel{display:none}
+.admin-panel.active{display:block}
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:28px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.stat-card-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.stat-card-value{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:900;color:var(--text)}
+.admin-section-title{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px}
+.admin-table th{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);color:var(--muted);font-weight:600;font-size:12px}
+.admin-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+.admin-table tr:last-child td{border-bottom:none}
+.admin-table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px}
+.banned-badge{background:rgba(244,67,54,0.15);color:var(--danger);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px}
+.announce-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+
+/* DOWNLOAD PAGE */
+.download-hero{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:40px;text-align:center;margin-bottom:24px}
+.download-hero h2{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:900;margin-bottom:10px}
+.download-hero p{color:var(--muted);font-size:14px;margin-bottom:24px}
+.version-badge{display:inline-block;background:var(--accent-dim);color:var(--accent);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:20px}
+.download-platforms{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:24px}
+.platform-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-align:center;transition:border-color .2s}
+.platform-card:hover{border-color:var(--accent)}
+.platform-card i{font-size:28px;color:var(--accent);margin-bottom:10px;display:block}
+.platform-card p{font-size:13px;font-weight:600;margin-bottom:4px}
+.platform-card span{font-size:11px;color:var(--muted)}
+
+/* COINS / SHOP */
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:28px}
+.coin-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;transition:border-color .2s,transform .15s;cursor:pointer}
+.coin-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.coin-card .amount{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:900;color:var(--accent)}
+.coin-card .coins-label{font-size:12px;color:var(--muted);margin-bottom:12px}
+.coin-card .price{font-size:15px;font-weight:700;margin-bottom:14px}
+.coin-card .bonus{font-size:11px;color:var(--success);margin-bottom:12px}
+
+/* OVERLAY / MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);display:none;align-items:center;justify-content:center;z-index:999;backdrop-filter:blur(4px)}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;width:90%;max-width:360px}
+.modal h3{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:900;margin-bottom:20px}
+.modal-wide{max-width:480px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px}
+.field input,.field textarea,.field select{width:100%;padding:9px 12px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;outline:none;transition:border-color .15s}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent)}
+.field select option{background:var(--surface)}
+.field textarea{resize:vertical;min-height:72px}
+.modal-footer{display:flex;gap:8px;margin-top:6px}
+.modal-footer .btn{flex:1;justify-content:center}
+.stripe-note{font-size:11px;color:var(--muted);text-align:center;margin-top:10px}
+.stripe-note i{color:#635bff}
+
+/* FRIENDS */
+.friend-list{display:flex;flex-direction:column;gap:10px}
+.friend-row{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;display:flex;align-items:center;gap:12px}
+.friend-row img{width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--border)}
+.friend-row-name{font-weight:600;font-size:14px;flex:1}
+.friend-row-sub{font-size:11px;color:var(--muted)}
+
+/* TOAST */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:9999;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.empty{color:var(--muted);font-size:14px;padding:48px 0;text-align:center}
+.empty i{font-size:32px;display:block;margin-bottom:10px;opacity:.4}
+
+.search-bar{display:flex;gap:8px;margin-bottom:16px}
+.search-bar input{flex:1;padding:9px 12px;background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;outline:none}
+.search-bar input:focus{border-color:var(--accent)}
+
+@media(max-width:600px){main{padding:20px 16px}header{padding:0 16px}nav .nav-btn span{display:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo" onclick="showPage('feed')">Just <span>Una!</span></div>
+  <nav>
+    <button class="nav-btn active" id="nb-feed" onclick="showPage('feed')"><i class="fa-solid fa-image"></i><span>Feed</span></button>
+    <button class="nav-btn" id="nb-rooms" onclick="showPage('rooms')"><i class="fa-solid fa-door-open"></i><span>Rooms</span></button>
+    <button class="nav-btn" id="nb-rules" onclick="showPage('rules')"><i class="fa-solid fa-book"></i><span>Rules</span></button>
+    <button class="nav-btn" id="nb-download" onclick="showPage('download')"><i class="fa-solid fa-download"></i><span>Download</span></button>
+    <button class="nav-btn" id="nb-shop" onclick="showPage('shop')" style="display:none"><i class="fa-solid fa-coins"></i><span>Shop</span></button>
+    <button class="nav-btn" id="nb-profile" onclick="showPage('profile')" style="display:none"><i class="fa-solid fa-user"></i><span>Profile</span></button>
+    <button class="nav-btn" id="nb-admin" onclick="showPage('admin')" style="display:none"><i class="fa-solid fa-shield"></i><span>Admin</span></button>
+  </nav>
+  <div class="auth-area">
+    <div id="loggedOutNav" style="display:flex;gap:8px">
+      <button class="btn" onclick="openOverlay('loginOverlay')">Log in</button>
+      <button class="btn btn-accent" onclick="openOverlay('signupOverlay')">Sign up</button>
+    </div>
+    <div id="loggedInNav" style="display:none;align-items:center;gap:8px">
+      <div class="user-chip" onclick="showPage('profile')">
+        <img id="navPfp" src="https://i.imgur.com/6VB896R.png" alt="avatar">
+        <span id="navUsername">Player</span>
+      </div>
+      <button class="btn btn-danger" onclick="logout()">Logout</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- FEED -->
+<div id="page-feed" class="page active">
+  <div class="page-header">
+    <div><p class="page-eyebrow">Community</p><h1 class="page-title">Feed</h1></div>
+    <button class="btn btn-accent" id="publishBtn" style="display:none" onclick="openOverlay('publishOverlay')"><i class="fa-solid fa-plus"></i> Publish</button>
+  </div>
+  <div class="grid" id="feedGrid"><div class="empty" style="grid-column:1/-1"><i class="fa-solid fa-satellite-dish"></i>Loading feed...</div></div>
+</div>
+
+<!-- ROOMS -->
+<div id="page-rooms" class="page">
+  <div class="page-header">
+    <div><p class="page-eyebrow">Explore</p><h1 class="page-title">Rooms</h1></div>
+  </div>
+  <div class="grid" id="roomsGrid"><div class="empty" style="grid-column:1/-1"><i class="fa-solid fa-door-open"></i>Loading rooms...</div></div>
+</div>
+
+<!-- RULES -->
+<div id="page-rules" class="page">
+  <div class="page-header"><div><p class="page-eyebrow">Read first</p><h1 class="page-title">Rules</h1></div></div>
+  <div class="rules-content">
+    <h3>Be respectful</h3>
+    <p>Treat everyone in Just Una! with respect. Harassment, bullying, or hate speech of any kind will result in a permanent ban.</p>
+    <h3>Keep it appropriate</h3>
+    <ul><li>No NSFW content of any kind</li><li>No graphic violence or gore</li><li>No content that targets or demeans other players</li></ul>
+    <h3>UGC rules</h3>
+    <p>All user-created content must follow the above guidelines and is subject to review and removal at any time.</p>
+    <h3>No exploiting</h3>
+    <p>Do not attempt to exploit bugs or glitches. Report them to the owner instead.</p>
+    <h3>Owner's word is final</h3>
+    <p>Decisions made by @tysondahamOWNER are final. Appeals can be sent via the community feed.</p>
+    <div class="key-box"><p>Signup key: <code>swiper no swiping</code></p><p style="margin-top:6px;font-size:12px;color:var(--muted)">Keep this between us.</p></div>
+  </div>
+</div>
+
+<!-- DOWNLOAD -->
+<div id="page-download" class="page">
+  <div class="page-header"><div><p class="page-eyebrow">Get the game</p><h1 class="page-title">Download</h1></div></div>
+  <div class="download-hero">
+    <i class="fa-solid fa-gamepad" style="font-size:48px;color:var(--accent);margin-bottom:16px;display:block"></i>
+    <h2>Just Una!</h2>
+    <p>The virtual sandbox universe. Customize your room, make friends, and explore.</p>
+    <div id="releaseInfo"><div class="empty"><i class="fa-solid fa-satellite-dish"></i>Checking for releases...</div></div>
+  </div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;max-width:600px">
+    <p style="font-size:13px;font-weight:700;margin-bottom:8px">System requirements</p>
+    <p style="font-size:12px;color:var(--muted);line-height:1.7">Windows 10/11 64-bit · 4GB RAM minimum · 2GB storage · Internet connection required</p>
+  </div>
+</div>
+
+<!-- SHOP -->
+<div id="page-shop" class="page">
+  <div class="page-header">
+    <div><p class="page-eyebrow">Coins</p><h1 class="page-title">Shop</h1></div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700">
+      <i class="fa-solid fa-coins" style="color:var(--accent)"></i> <span id="shopCoinBalance">0</span> coins
+    </div>
+  </div>
+  <p style="color:var(--muted);font-size:14px;margin-bottom:20px">Buy coins to spend on items, rooms, and customization inside Just Una!</p>
+  <div class="shop-grid">
+    <div class="coin-card" onclick="openPurchase(100,'$0.99')"><div class="amount">100</div><div class="coins-label">coins</div><div class="price">$0.99</div><button class="btn btn-accent" style="width:100%">Buy</button></div>
+    <div class="coin-card" onclick="openPurchase(500,'$3.99')"><div class="amount">500</div><div class="coins-label">coins</div><div class="price">$3.99</div><div class="bonus">+50 bonus</div><button class="btn btn-accent" style="width:100%">Buy</button></div>
+    <div class="coin-card" onclick="openPurchase(1200,'$7.99')"><div class="amount">1,200</div><div class="coins-label">coins</div><div class="price">$7.99</div><div class="bonus">+200 bonus</div><button class="btn btn-accent" style="width:100%">Buy</button></div>
+    <div class="coin-card" onclick="openPurchase(2800,'$14.99')"><div class="amount">2,800</div><div class="coins-label">coins</div><div class="price">$14.99</div><div class="bonus">+800 bonus</div><button class="btn btn-accent" style="width:100%">Buy</button></div>
+    <div class="coin-card" onclick="openPurchase(6000,'$24.99')"><div class="amount">6,000</div><div class="coins-label">coins</div><div class="price">$24.99</div><div class="bonus">+1000 bonus</div><button class="btn btn-accent" style="width:100%">Buy</button></div>
+    <div class="coin-card" onclick="openPurchase(15000,'$49.99')"><div class="amount">15,000</div><div class="coins-label">coins</div><div class="price">$49.99</div><div class="bonus">Best value</div><button class="btn btn-accent" style="width:100%">Buy</button></div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div id="page-profile" class="page">
+  <div class="profile-header">
+    <img class="profile-avatar" id="profilePfp" src="https://i.imgur.com/6VB896R.png" alt="avatar">
+    <div style="flex:1">
+      <div class="profile-name" id="profileName">Player</div>
+      <div class="profile-stats">
+        <div class="profile-stat"><span id="profileCoins">0</span>Coins</div>
+        <div class="profile-stat"><span id="profilePosts">0</span>Posts</div>
+        <div class="profile-stat"><span id="profileFriends">0</span>Friends</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+    <div>
+      <p style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Your posts</p>
+      <div class="grid" id="profileGrid"><div class="empty" style="grid-column:1/-1"><i class="fa-solid fa-images"></i>No posts yet.</div></div>
+    </div>
+    <div>
+      <p style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Friends</p>
+      <div id="friendList"><div class="empty"><i class="fa-solid fa-user-group"></i>No friends yet.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="page-admin" class="page">
+  <div class="page-header"><div><p class="page-eyebrow">Owner only</p><h1 class="page-title">Admin</h1></div></div>
+  <div class="admin-grid">
+    <div class="stat-card"><div class="stat-card-label">Total users</div><div class="stat-card-value" id="adminUsers">—</div></div>
+    <div class="stat-card"><div class="stat-card-label">Total posts</div><div class="stat-card-value" id="adminPosts">—</div></div>
+    <div class="stat-card"><div class="stat-card-label">Total rooms</div><div class="stat-card-value" id="adminRooms">—</div></div>
+    <div class="stat-card"><div class="stat-card-label">Banned users</div><div class="stat-card-value" id="adminBanned">—</div></div>
+  </div>
+
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="switchAdminTab('tab-users')">Users</button>
+    <button class="admin-tab" onclick="switchAdminTab('tab-posts')">Posts</button>
+    <button class="admin-tab" onclick="switchAdminTab('tab-rooms')">Rooms</button>
+    <button class="admin-tab" onclick="switchAdminTab('tab-announce')">Announce</button>
+    <button class="admin-tab" onclick="switchAdminTab('tab-coins')">Give Coins</button>
+  </div>
+
+  <!-- USERS TAB -->
+  <div id="tab-users" class="admin-panel active">
+    <div class="search-bar"><input type="text" id="userSearch" placeholder="Search by username..." oninput="filterUsers()"><button class="btn btn-sm" onclick="loadAdminUsers()"><i class="fa-solid fa-refresh"></i></button></div>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Username</th><th>Age group</th><th>Coins</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="adminUserTable"><tr><td colspan="6" style="color:var(--muted);text-align:center;padding:20px">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- POSTS TAB -->
+  <div id="tab-posts" class="admin-panel">
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Title</th><th>Author</th><th>Date</th><th>Action</th></tr></thead>
+        <tbody id="adminPostTable"><tr><td colspan="4" style="color:var(--muted);text-align:center;padding:20px">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ROOMS TAB -->
+  <div id="tab-rooms" class="admin-panel">
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Room name</th><th>Owner</th><th>Players</th><th>Public</th><th>Action</th></tr></thead>
+        <tbody id="adminRoomTable"><tr><td colspan="5" style="color:var(--muted);text-align:center;padding:20px">Loading...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ANNOUNCE TAB -->
+  <div id="tab-announce" class="admin-panel">
+    <div class="announce-box">
+      <p style="font-size:13px;font-weight:700;margin-bottom:14px">Broadcast announcement</p>
+      <div class="field"><label>Title</label><input type="text" id="announceTitle" placeholder="Official announcement..."></div>
+      <div class="field"><label>Message</label><textarea id="announceBody" rows="4" placeholder="Write your announcement..."></textarea></div>
+      <button class="btn btn-accent" onclick="sendAnnouncement()"><i class="fa-solid fa-bullhorn"></i> Broadcast</button>
+      <p style="font-size:11px;color:var(--muted);margin-top:10px">This will post to the feed as @tysondahamOWNER with the Official badge.</p>
+    </div>
+    <p style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Past announcements</p>
+    <div id="announceHistory"><div class="empty"><i class="fa-solid fa-bullhorn"></i>No announcements yet.</div></div>
+  </div>
+
+  <!-- COINS TAB -->
+  <div id="tab-coins" class="admin-panel">
+    <div class="announce-box">
+      <p style="font-size:13px;font-weight:700;margin-bottom:14px">Give coins to a player</p>
+      <div class="field"><label>Username</label><input type="text" id="coinUsername" placeholder="player username"></div>
+      <div class="field"><label>Amount</label><input type="number" id="coinAmount" placeholder="500" min="1"></div>
+      <div class="field"><label>Reason (optional)</label><input type="text" id="coinReason" placeholder="reward, contest win, etc."></div>
+      <button class="btn btn-accent" onclick="giveCoins()"><i class="fa-solid fa-coins"></i> Give coins</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- MODALS -->
+<div id="loginOverlay" class="overlay" onclick="overlayClick(event,'loginOverlay')">
+  <div class="modal">
+    <h3>Log in</h3>
+    <form id="loginForm">
+      <div class="field"><label>Username</label><input type="text" id="loginUser" required autocomplete="username"></div>
+      <div class="field"><label>Password</label><input type="password" id="loginPass" required autocomplete="current-password"></div>
+      <div class="modal-footer"><button type="button" class="btn" onclick="closeOverlay('loginOverlay')">Cancel</button><button type="submit" class="btn btn-accent">Log in</button></div>
+    </form>
+  </div>
+</div>
+
+<div id="signupOverlay" class="overlay" onclick="overlayClick(event,'signupOverlay')">
+  <div class="modal">
+    <h3>Sign up</h3>
+    <form id="signupForm">
+      <div class="field"><label>Username</label><input type="text" id="signupUser" required autocomplete="username"></div>
+      <div class="field"><label>Email</label><input type="email" id="signupEmail" required autocomplete="email"></div>
+      <div class="field"><label>Password</label><input type="password" id="signupPass" required autocomplete="new-password"></div>
+      <div class="field"><label>Signup key</label><input type="password" id="signupKey" required placeholder="ask in rules"></div>
+      <div class="modal-footer"><button type="button" class="btn" onclick="closeOverlay('signupOverlay')">Cancel</button><button type="submit" class="btn btn-accent">Create account</button></div>
+    </form>
+  </div>
+</div>
+
+<div id="publishOverlay" class="overlay" onclick="overlayClick(event,'publishOverlay')">
+  <div class="modal">
+    <h3>Publish</h3>
+    <div class="field"><label>Image URL</label><input type="url" id="postImg" placeholder="https://..."></div>
+    <div class="field"><label>Title</label><input type="text" id="postTitle"></div>
+    <div class="field"><label>Caption</label><textarea id="postCaption"></textarea></div>
+    <div class="modal-footer"><button class="btn" onclick="closeOverlay('publishOverlay')">Cancel</button><button class="btn btn-accent" onclick="submitPost()">Publish</button></div>
+  </div>
+</div>
+
+<div id="purchaseOverlay" class="overlay" onclick="overlayClick(event,'purchaseOverlay')">
+  <div class="modal modal-wide">
+    <h3>Buy coins</h3>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:20px">You're buying <strong id="purchaseAmt" style="color:var(--accent)"></strong> for <strong id="purchasePrice"></strong></p>
+    <div class="field"><label>Card number</label><input type="text" placeholder="1234 5678 9012 3456" maxlength="19" id="cardNum" oninput="fmtCard(this)"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="field"><label>Expiry</label><input type="text" placeholder="MM/YY" maxlength="5" id="cardExp" oninput="fmtExp(this)"></div>
+      <div class="field"><label>CVC</label><input type="text" placeholder="123" maxlength="3" id="cardCvc"></div>
+    </div>
+    <div class="modal-footer"><button class="btn" onclick="closeOverlay('purchaseOverlay')">Cancel</button><button class="btn btn-accent" onclick="processPurchase()"><i class="fa-solid fa-lock"></i> Pay</button></div>
+    <p class="stripe-note"><i class="fa-brands fa-stripe"></i> Payments powered by Stripe — coming soon</p>
+  </div>
+</div>
+
+<div id="friendAddOverlay" class="overlay" onclick="overlayClick(event,'friendAddOverlay')">
+  <div class="modal">
+    <h3>Add friend</h3>
+    <div class="field"><label>Username</label><input type="text" id="friendUsername" placeholder="their username"></div>
+    <div class="modal-footer"><button class="btn" onclick="closeOverlay('friendAddOverlay')">Cancel</button><button class="btn btn-accent" onclick="sendFriendRequest()">Send request</button></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = '';
+const OWNER = 'tysondahamOWNER';
+const GITHUB_REPO = 'tysondaham/just-una';
+let currentUser = localStorage.getItem('rec_user') || null;
+let currentPfp = localStorage.getItem('rec_pfp') || 'https://i.imgur.com/6VB896R.png';
+let allUsers = [];
+let purchaseData = {};
+
+// ── UTILS ──
+function toast(msg, color) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.borderColor = color || 'var(--border)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+function openOverlay(id) { document.getElementById(id).classList.add('open'); }
+function closeOverlay(id) { document.getElementById(id).classList.remove('open'); }
+function overlayClick(e, id) { if (e.target.id === id) closeOverlay(id); }
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const nb = document.getElementById('nb-' + name);
+  if (nb) nb.classList.add('active');
+  if (name === 'feed') loadFeed();
+  if (name === 'rooms') loadRooms();
+  if (name === 'profile') loadProfile();
+  if (name === 'admin') loadAdmin();
+  if (name === 'download') loadRelease();
+  if (name === 'shop') loadShopBalance();
+}
+
+function initSession() {
+  if (currentUser) {
+    document.getElementById('loggedOutNav').style.display = 'none';
+    document.getElementById('loggedInNav').style.display = 'flex';
+    document.getElementById('navUsername').textContent = currentUser;
+    document.getElementById('navPfp').src = currentPfp;
+    document.getElementById('publishBtn').style.display = 'flex';
+    document.getElementById('nb-profile').style.display = 'flex';
+    document.getElementById('nb-shop').style.display = 'flex';
+    if (currentUser === OWNER) document.getElementById('nb-admin').style.display = 'flex';
+  }
+  loadFeed();
+}
+function logout() { localStorage.clear(); location.reload(); }
+
+// ── FEED ──
+async function loadFeed() {
+  const grid = document.getElementById('feedGrid');
+  grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><i class="fa-solid fa-satellite-dish"></i>Loading...</div>';
+  try {
+    const res = await fetch(API + '/api/photos');
+    const data = await res.json();
+    if (!data.success || !data.photos.length) { grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><i class="fa-solid fa-image"></i>Feed is empty. Be the first to post!</div>'; return; }
+    grid.innerHTML = '';
+    data.photos.forEach(p => grid.appendChild(makePostCard(p)));
+  } catch(e) {
+    grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><i class="fa-solid fa-triangle-exclamation"></i>Could not load feed. Server may be waking up — try again in a moment.</div>';
+  }
+}
+
+function makePostCard(p) {
+  const card = document.createElement('div');
+  card.className = 'post-card';
+  const imgHtml = p.imageUrl ? `<img class="post-card-img" src="${p.imageUrl}" alt="${p.title}" onerror="this.outerHTML='<div class=post-card-img-placeholder><i class=fa-solid fa-image-slash></i>No image</div>'">` : `<div class="post-card-img-placeholder"><i class="fa-solid fa-image-slash"></i>No image</div>`;
+  card.innerHTML = `${imgHtml}<div class="post-card-body">${p.username===OWNER?'<span class="post-badge">Official</span>':''}<div class="post-title">${p.title}</div>${p.caption?`<div class="post-caption">${p.caption}</div>`:''}<div class="post-author">@${p.username}</div></div>`;
+  return card;
+}
+
+async function submitPost() {
+  const img = document.getElementById('postImg').value.trim();
+  const title = document.getElementById('postTitle').value.trim();
+  const caption = document.getElementById('postCaption').value.trim();
+  if (!title) { toast('Title is required', 'var(--danger)'); return; }
+  try {
+    const res = await fetch(API + '/api/photos', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ username: currentUser, imageUrl: img, title, caption }) });
+    const data = await res.json();
+    if (data.success) { closeOverlay('publishOverlay'); toast('Post published!', 'var(--accent)'); loadFeed(); }
+    else toast('Could not publish', 'var(--danger)');
+  } catch(e) { toast('Server error', 'var(--danger)'); }
+}
+
+// ── ROOMS ──
+async function loadRooms() {
+  const grid = document.getElementById('roomsGrid');
+  grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><i class="fa-solid fa-door-open"></i>Loading rooms...</div>';
+  try {
+    const res = await fetch(API + '/api/rooms');
+    const data = await res.json();
+    const rooms = data.rooms || data;
+    if (!rooms || !rooms.length) { grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><i class="fa-solid fa-door-closed"></i>No public rooms yet.</div>'; return; }
+    grid.innerHTML = '';
+    rooms.forEach(r => {
+      const card = document.createElement('div');
+      card.className = 'room-card';
+      card.innerHTML = `<div class="room-card-name">${r.roomName||r.name||'Unnamed room'}</div><div class="room-card-meta"><span><span class="room-dot"></span> ${r.currentPlayers||0} / ${r.maxPlayers||10} players</span><span><i class="fa-solid fa-user" style="font-size:10px"></i> ${r.ownerId||'Unknown'}</span></div>${r.tags&&r.tags.length?`<div style="display:flex;gap:6px;flex-wrap:wrap">${r.tags.map(t=>`<span style="background:var(--accent-dim);color:var(--accent);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px">${t}</span>`).join('')}</div>`:''}`;
+      grid.appendChild(card);
+    });
+  } catch(e) { grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><i class="fa-solid fa-triangle-exclamation"></i>Could not load rooms.</div>'; }
+}
+
+// ── DOWNLOAD ──
+async function loadRelease() {
+  const box = document.getElementById('releaseInfo');
+  try {
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`);
+    if (!res.ok) throw new Error('no release');
+    const r = await res.json();
+    const assets = r.assets || [];
+    const winAsset = assets.find(a => a.name.endsWith('.exe') || a.name.includes('windows'));
+    const date = new Date(r.published_at).toLocaleDateString();
+    box.innerHTML = `
+      <div class="version-badge">v${r.tag_name} — released ${date}</div>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:20px">${r.body ? r.body.slice(0,200) : 'New release available'}</p>
+      <div class="download-platforms">
+        ${winAsset ? `<div class="platform-card"><i class="fa-brands fa-windows"></i><p>Windows</p><span>${(winAsset.size/1024/1024).toFixed(1)} MB</span><a href="${winAsset.browser_download_url}" style="text-decoration:none"><button class="btn btn-accent" style="width:100%;margin-top:12px"><i class="fa-solid fa-download"></i> Download</button></a></div>` : '<div class="platform-card"><i class="fa-brands fa-windows"></i><p>Windows</p><span>Coming soon</span></div>'}
+        <div class="platform-card"><i class="fa-brands fa-apple"></i><p>macOS</p><span>Coming soon</span></div>
+        <div class="platform-card"><i class="fa-brands fa-linux"></i><p>Linux</p><span>Coming soon</span></div>
+      </div>`;
+  } catch(e) {
+    box.innerHTML = `<div class="version-badge" style="background:rgba(136,136,154,0.15);color:var(--muted)">No release yet</div><p style="color:var(--muted);font-size:13px;margin-top:10px">Just Una! is in development. Check back soon for the first download.</p>`;
+  }
+}
+
+// ── SHOP ──
+async function loadShopBalance() {
+  if (!currentUser) return;
+  try {
+    const res = await fetch(API + '/api/user/' + currentUser);
+    const data = await res.json();
+    document.getElementById('shopCoinBalance').textContent = (data.user?.coins ?? 0).toLocaleString();
+  } catch(e) {}
+}
+function openPurchase(amt, price) {
+  if (!currentUser) { toast('Log in to buy coins', 'var(--danger)'); openOverlay('loginOverlay'); return; }
+  purchaseData = { amt, price };
+  document.getElementById('purchaseAmt').textContent = amt.toLocaleString() + ' coins';
+  document.getElementById('purchasePrice').textContent = price;
+  openOverlay('purchaseOverlay');
+}
+function fmtCard(el) { el.value = el.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19); }
+function fmtExp(el) { el.value = el.value.replace(/\D/g,'').replace(/(\d{2})(\d)/,'$1/$2').slice(0,5); }
+async function processPurchase() {
+  toast('Stripe integration coming soon — coins not charged yet', 'var(--muted)');
+  closeOverlay('purchaseOverlay');
+}
+
+// ── PROFILE ──
+async function loadProfile() {
+  if (!currentUser) { showPage('feed'); return; }
+  document.getElementById('profileName').textContent = currentUser;
+  document.getElementById('profilePfp').src = currentPfp;
+  try {
+    const [photosRes, userRes] = await Promise.all([fetch(API+'/api/photos'), fetch(API+'/api/user/'+currentUser)]);
+    const photosData = await photosRes.json();
+    const userData = await userRes.json();
+    if (photosData.success) {
+      const mine = photosData.photos.filter(p => p.username === currentUser);
+      document.getElementById('profilePosts').textContent = mine.length;
+      const grid = document.getElementById('profileGrid');
+      grid.innerHTML = '';
+      mine.length ? mine.forEach(p => grid.appendChild(makePostCard(p))) : (grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><i class="fa-solid fa-images"></i>No posts yet.</div>');
+    }
+    if (userData.user) {
+      document.getElementById('profileCoins').textContent = (userData.user.coins||0).toLocaleString();
+      const friends = userData.user.friends || [];
+      document.getElementById('profileFriends').textContent = friends.length;
+      const fl = document.getElementById('friendList');
+      if (friends.length) {
+        fl.innerHTML = `<div style="margin-bottom:10px"><button class="btn btn-sm" onclick="openOverlay('friendAddOverlay')"><i class="fa-solid fa-user-plus"></i> Add friend</button></div><div class="friend-list">${friends.map(f=>`<div class="friend-row"><img src="https://i.imgur.com/6VB896R.png" alt="${f}"><div><div class="friend-row-name">@${f}</div></div><button class="btn btn-danger" onclick="removeFriend('${f}')">Remove</button></div>`).join('')}</div>`;
+      } else {
+        fl.innerHTML = `<div class="empty"><i class="fa-solid fa-user-group"></i>No friends yet.</div><button class="btn btn-accent" style="margin-top:12px" onclick="openOverlay('friendAddOverlay')"><i class="fa-solid fa-user-plus"></i> Add friend</button>`;
+      }
+    }
+  } catch(e) {}
+}
+
+async function sendFriendRequest() {
+  const target = document.getElementById('friendUsername').value.trim();
+  if (!target) return;
+  try {
+    const res = await fetch(API + '/api/friends/add', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ username: currentUser, friend: target }) });
+    const data = await res.json();
+    if (data.success) { toast('Friend added!', 'var(--accent)'); closeOverlay('friendAddOverlay'); loadProfile(); }
+    else toast(data.message || 'Could not add friend', 'var(--danger)');
+  } catch(e) { toast('Server error', 'var(--danger)'); }
+}
+
+async function removeFriend(target) {
+  try {
+    const res = await fetch(API + '/api/friends/remove', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ username: currentUser, friend: target }) });
+    const data = await res.json();
+    if (data.success) { toast('Friend removed', 'var(--muted)'); loadProfile(); }
+    else toast('Could not remove', 'var(--danger)');
+  } catch(e) { toast('Server error', 'var(--danger)'); }
+}
+
+// ── ADMIN ──
+function switchAdminTab(id) {
+  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'tab-users') loadAdminUsers();
+  if (id === 'tab-posts') loadAdminPosts();
+  if (id === 'tab-rooms') loadAdminRooms();
+  if (id === 'tab-announce') loadAnnounceHistory();
+}
+
+async function loadAdmin() {
+  if (currentUser !== OWNER) { showPage('feed'); return; }
+  loadAdminUsers();
+  try {
+    const [photosRes, roomsRes] = await Promise.all([fetch(API+'/api/photos'), fetch(API+'/api/rooms')]);
+    const photos = await photosRes.json();
+    const rooms = await roomsRes.json();
+    document.getElementById('adminPosts').textContent = (photos.photos||[]).length;
+    document.getElementById('adminRooms').textContent = (rooms.rooms||rooms||[]).length;
+  } catch(e) {}
+}
+
+async function loadAdminUsers() {
+  try {
+    const res = await fetch(API + '/api/admin/users', { headers:{'x-admin-user': currentUser} });
+    const data = await res.json();
+    allUsers = data.users || [];
+    document.getElementById('adminUsers').textContent = allUsers.length;
+    document.getElementById('adminBanned').textContent = allUsers.filter(u=>u.isBanned).length;
+    renderUserTable(allUsers);
+  } catch(e) {
+    document.getElementById('adminUserTable').innerHTML = '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:20px">Could not load users — add GET /api/admin/users to your backend</td></tr>';
+  }
+}
+
+function renderUserTable(users) {
+  const tb = document.getElementById('adminUserTable');
+  if (!users.length) { tb.innerHTML = '<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:20px">No users found</td></tr>'; return; }
+  tb.innerHTML = users.map(u => `<tr>
+    <td style="font-weight:700">@${u.username}</td>
+    <td style="color:var(--muted)">${u.age >= 13 ? 'Over 13' : 'Under 13'}</td>
+    <td><i class="fa-solid fa-coins" style="color:var(--accent);font-size:11px"></i> ${(u.coins||0).toLocaleString()}</td>
+    <td style="color:var(--muted);font-size:12px">${u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—'}</td>
+    <td>${u.isBanned ? '<span class="banned-badge">Banned</span>' : '<span style="color:var(--success);font-size:12px;font-weight:700">Active</span>'}</td>
+    <td style="display:flex;gap:6px;flex-wrap:wrap">
+      ${u.isBanned
+        ? `<button class="btn btn-success" onclick="banUser('${u.username}',false)">Unban</button>`
+        : `<button class="btn btn-danger" onclick="banUser('${u.username}',true)">Ban</button>`}
+    </td></tr>`).join('');
+}
+
+function filterUsers() {
+  const q = document.getElementById('userSearch').value.toLowerCase();
+  renderUserTable(allUsers.filter(u => u.username.toLowerCase().includes(q)));
+}
+
+async function banUser(username, ban) {
+  if (!confirm(`${ban?'Ban':'Unban'} @${username}?`)) return;
+  try {
+    const res = await fetch(API + '/api/admin/ban', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ adminUser: currentUser, targetUser: username, ban }) });
+    const data = await res.json();
+    if (data.success) { toast(`@${username} ${ban?'banned':'unbanned'}`, ban?'var(--danger)':'var(--success)'); loadAdminUsers(); }
+    else toast(data.message||'Failed', 'var(--danger)');
+  } catch(e) { toast('Server error', 'var(--danger)'); }
+}
+
+async function loadAdminPosts() {
+  try {
+    const res = await fetch(API + '/api/photos');
+    const data = await res.json();
+    const posts = data.photos || [];
+    const tb = document.getElementById('adminPostTable');
+    if (!posts.length) { tb.innerHTML = '<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:20px">No posts</td></tr>'; return; }
+    tb.innerHTML = posts.map(p => `<tr>
+      <td style="font-weight:600">${p.title}</td>
+      <td style="color:var(--accent)">@${p.username}</td>
+      <td style="color:var(--muted);font-size:12px">${p.createdAt?new Date(p.createdAt).toLocaleDateString():'—'}</td>
+      <td><button class="btn btn-danger" onclick="deletePost('${p._id}')">Delete</button></td></tr>`).join('');
+  } catch(e) {}
+}
+
+async function deletePost(id) {
+  if (!confirm('Delete this post?')) return;
+  try {
+    const res = await fetch(API + '/api/photos/' + id, { method:'DELETE', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ username: currentUser }) });
+    const data = await res.json();
+    if (data.success) { toast('Post deleted', 'var(--accent)'); loadAdminPosts(); }
+    else toast('Could not delete', 'var(--danger)');
+  } catch(e) { toast('Server error', 'var(--danger)'); }
+}
+
+async function loadAdminRooms() {
+  try {
+    const res = await fetch(API + '/api/rooms');
+    const data = await res.json();
+    const rooms = data.rooms || data || [];
+    const tb = document.getElementById('adminRoomTable');
+    if (!rooms.length) { tb.innerHTML = '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:20px">No rooms</td></tr>'; return; }
+    tb.innerHTML = rooms.map(r => `<tr>
+      <td style="font-weight:600">${r.roomName||r.name||'Unnamed'}</td>
+      <td style="color:var(--accent)">@${r.ownerId||'—'}</td>
+      <td style="color:var(--muted)">${r.currentPlayers||0}/${r.maxPlayers||10}</td>
+      <td>${r.isPublic?'<span style="color:var(--success);font-size:12px;font-weight:700">Public</span>':'<span style="color:var(--muted);font-size:12px">Private</span>'}</td>
+      <td><button class="btn btn-danger" onclick="wipeRoom('${r._id}')">Wipe</button></td></tr>`).join('');
+  } catch(e) {}
+}
+
+async function wipeRoom(id) {
+  if (!confirm('Wipe this room? This clears all objects inside it.')) return;
+  try {
+    const res = await fetch(API + '/api/admin/rooms/' + id + '/wipe', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ adminUser: currentUser }) });
+    const data = await res.json();
+    if (data.success) { toast('Room wiped', 'var(--accent)'); loadAdminRooms(); }
+    else toast(data.message||'Failed', 'var(--danger)');
+  } catch(e) { toast('Server error', 'var(--danger)'); }
+}
+
+async function sendAnnouncement() {
+  const title = document.getElementById('announceTitle').value.trim();
+  const body = document.getElementById('announceBody').value.trim();
+  if (!title || !body) { toast('Title and message required', 'var(--danger)'); return; }
+  try {
+    const res = await fetch(API + '/api/photos', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ username: currentUser, imageUrl: '', title, caption: body }) });
+    const data = await res.json();
+    if (data.success) {
+      toast('Announcement sent!', 'var(--accent)');
+      document.getElementById('announceTitle').value = '';
+      document.getElementById('announceBody').value = '';
+      loadAnnounceHistory();
+    } else toast('Failed to send', 'var(--danger)');
+  } catch(e) { toast('Server error', 'var(--danger)'); }
+}
+
+async function loadAnnounceHistory() {
+  try {
+    const res = await fetch(API + '/api/photos');
+    const data = await res.json();
+    const announcements = (data.photos||[]).filter(p => p.username === OWNER);
+    const box = document.getElementById('announceHistory');
+    if (!announcements.length) { box.innerHTML = '<div class="empty"><i class="fa-solid fa-bullhorn"></i>No announcements yet.</div>'; return; }
+    box.innerHTML = `<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Title</th><th>Date</th><th>Action</th></tr></thead><tbody>${announcements.map(a=>`<tr><td style="font-weight:600">${a.title}</td><td style="color:var(--muted);font-size:12px">${a.createdAt?new Date(a.createdAt).toLocaleDateString():'—'}</td><td><button class="btn btn-danger" onclick="deletePost('${a._id}')">Delete</button></td></tr>`).join('')}</tbody></table></div>`;
+  } catch(e) {}
+}
+
+async function giveCoins() {
+  const username = document.getElementById('coinUsername').value.trim();
+  const amount = parseInt(document.getElementById('coinAmount').value);
+  const reason = document.getElementById('coinReason').value.trim();
+  if (!username || !amount || amount < 1) { toast('Username and amount required', 'var(--danger)'); return; }
+  try {
+    const res = await fetch(API + '/api/admin/coins', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ adminUser: currentUser, targetUser: username, amount, reason }) });
+    const data = await res.json();
+    if (data.success) {
+      toast(`Gave ${amount.toLocaleString()} coins to @${username}!`, 'var(--accent)');
+      document.getElementById('coinUsername').value = '';
+      document.getElementById('coinAmount').value = '';
+      document.getElementById('coinReason').value = '';
+    } else toast(data.message||'Failed', 'var(--danger)');
+  } catch(e) { toast('Server error — add POST /api/admin/coins to backend', 'var(--danger)'); }
+}
+
+// ── AUTH ──
+document.getElementById('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  try {
+    const res = await fetch(API + '/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ username: document.getElementById('loginUser').value, password: document.getElementById('loginPass').value }) });
+    const data = await res.json();
+    if (data.success) { localStorage.setItem('rec_user', data.user.username); localStorage.setItem('rec_pfp', data.user.pfpUrl||'https://i.imgur.com/6VB896R.png'); location.reload(); }
+    else toast(data.message||'Login failed', 'var(--danger)');
+  } catch(e) { toast('Server error', 'var(--danger)'); }
+});
+
+document.getElementById('signupForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  try {
+    const res = await fetch(API + '/api/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ username: document.getElementById('signupUser').value, email: document.getElementById('signupEmail').value, password: document.getElementById('signupPass').value, signupKey: document.getElementById('signupKey').value }) });
+    const data = await res.json();
+    if (data.success) { toast('Account created! Log in now.', 'var(--accent)'); closeOverlay('signupOverlay'); openOverlay('loginOverlay'); }
+    else toast(data.message||'Signup failed', 'var(--danger)');
+  } catch(e) { toast('Server error', 'var(--danger)'); }
+});
+
+window.onload = initSession;
+</script>
+</body>
+</html>
